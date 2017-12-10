@@ -30,7 +30,7 @@ import random
 import irc.strings
 from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
 
-answers = ["Yes", "No", "Why not", "Basically", "This is a korean channel.", "#"]
+answers = ["Yes", "No", "Basically", "This is a korean channel.", "#"]
 
 class TestBot(bot.SingleServerIRCBot):
     def __init__(self, channel, nickname, server, port=6667, password=""):
@@ -99,7 +99,7 @@ class TestBot(bot.SingleServerIRCBot):
         elif "bot" in cmd.lower():
             c.privmsg(e.target, "I'm not a bot!");
         elif cmd.split()[0] == "repeat":
-            c.privmsg(e.target, " ".join(cmd.split()[1:]))
+            c.privmsg(e.target, " ".join(cmd.split()[1:]).lower().replace("mujji", "you"))
         elif cmd == "dcc":
             dcc = self.dcc_listen()
             c.ctcp("DCC", nick, "CHAT chat %s %d" % (
@@ -107,6 +107,8 @@ class TestBot(bot.SingleServerIRCBot):
                 dcc.localport))
         elif cmd.endswith('!'):
             c.privmsg(e.target, '!!!!!')
+        elif "not" in cmd or "'t" in cmd:
+            c.privmsg(e.target, "Why not")
         else:
             ans = random.sample(answers, 1)[0]
             if ans != "#":
