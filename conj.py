@@ -68,7 +68,7 @@ pos_dict = {
 
 def conj(c, e, cmd):
   if len(cmd.split()) < 2:
-    c.privmsg(e.target, "conj: retrieve conjugation info. Usage: conj <word>")
+    c.privmsg(e.target, "whatis: decompose sentence. Usage: whatis <word>")
     return
   S = cmd.split(None, 1)[1]
   l = kkma.pos(S)

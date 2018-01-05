@@ -209,7 +209,7 @@ class TestBot(bot.SingleServerIRCBot):
       c.privmsg(e.target, "Hi")
     elif self.battle(e, cmd):
       pass
-    elif cmd.startswith("conj"):
+    elif cmd.startswith("whatis"):
       conj.conj(c, e, cmd)
     elif "bot" in cmd.lower():
       c.privmsg(e.target, "I'm not a bot!");
