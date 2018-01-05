@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 #
 # Example program using irc.bot.
 #
@@ -29,6 +29,7 @@ import bot
 import random
 import irc.strings
 from irc.client import ip_numstr_to_quad, ip_quad_to_numstr
+import conj
 
 answers = ["Yes", "No", "Basically", "This is a korean channel.", "#"]
 
@@ -208,6 +209,8 @@ class TestBot(bot.SingleServerIRCBot):
       c.privmsg(e.target, "Hi")
     elif self.battle(e, cmd):
       pass
+    elif cmd.startswith("conj"):
+      conj.conj(c, e, cmd)
     elif "bot" in cmd.lower():
       c.privmsg(e.target, "I'm not a bot!");
     elif cmd.split()[0] == "repeat":
@@ -227,12 +230,6 @@ class TestBot(bot.SingleServerIRCBot):
         c.privmsg(e.target, ans)
       else:
         c.privmsg(e.target, ' '.join(cmd.lower().split() + ['huh?']))
-
-server = "irc.snoonet.org"
-port = 6667
-channel = '#test'
-nickname = 'mujjibot'
-password = '42684pass'
 
 def main():
   random.seed()
