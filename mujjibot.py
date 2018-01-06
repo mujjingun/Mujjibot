@@ -199,7 +199,9 @@ class TestBot(bot.SingleServerIRCBot):
     nick = e.source.nick
     c = self.connection
 
-    if cmd == "disconnect":
+    if len(cmd.split()) == 0:
+      c.privmsg(e.target, "What?")
+    elif cmd == "disconnect":
       self.disconnect()
     elif cmd == "die" or cmd == "kill yourself":
       c.privmsg(e.target, "goodbye cruel world!")
@@ -209,12 +211,19 @@ class TestBot(bot.SingleServerIRCBot):
       c.privmsg(e.target, "Hi")
     elif self.battle(e, cmd):
       pass
-    elif cmd.startswith("whatis"):
+    elif cmd.split()[0] == "whatis":
       conj.conj(c, e, cmd)
     elif "bot" in cmd.lower():
       c.privmsg(e.target, "I'm not a bot!");
-    elif cmd.split()[0] == "repeat":
-      c.privmsg(e.target, " ".join(cmd.split()[1:]).lower().replace("mujji", "you"))
+    elif cmd.split()[0].lower() == "repeat" or cmd.split()[0].lower() == "say":
+      try:
+        to = cmd.split().index("to")
+        ref = cmd.split()[to + 1]
+        saystring = " ".join(cmd.split()[1:to]).lower().replace("mujji", "you")
+        c.privmsg(e.target, "{}: {}".format(ref, saystring))
+      except (ValueError, IndexError):
+        saystring = " ".join(cmd.split()[1:]).lower().replace("mujji", "you")
+        c.privmsg(e.target, saystring)
     elif cmd == "dcc":
       dcc = self.dcc_listen()
       c.ctcp("DCC", nick, "CHAT chat %s %d" % (
